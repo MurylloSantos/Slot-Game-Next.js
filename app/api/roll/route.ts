@@ -47,7 +47,7 @@ export async function POST() {
 
   // If session is invalid or expired
   if (!session) {
-    return NextResponse.json({ error: 'Invalid session' }, { status: 404 });
+    return NextResponse.json({ error: 'Invalid session'}, { status: 404 });
   }
 
   // Not enough credits to play
