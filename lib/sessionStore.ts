@@ -1,6 +1,7 @@
 //Type representing the signle game session
 type Session = {
-  credits: number; // Number of credits the user currently has, init: 10
+  credits: number, // Number of credits the user currently has, init: 10,
+  userId: string // userId who is using this session
 };
 
 //In-memory store for all active sessions, better to use database but for this assessment, this will be enough
@@ -10,9 +11,9 @@ const sessions = new Map<string, Session>();
  * Creates a new session with 10 starting credits.
  * Returns the session ID and initial session data.
  */
-export function createSession(): { id: string; data: Session } {
+export function createSession(userId: string): { id: string; data: Session } {
   const id = crypto.randomUUID(); // Unique session ID
-  const data = { credits: 10 }; // Initial credit balance
+  const data = { credits: 10, userId }; // Initial credit balance
   sessions.set(id, data); // Store session in memory
   return { id, data };
 }
