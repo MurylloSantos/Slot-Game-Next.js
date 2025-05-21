@@ -6,7 +6,7 @@ import { getSession, deleteSession } from '@/lib/sessionStore'; // Use helper fu
 
 export async function POST() {
   // Read session ID from the request cookie
-  const sessionId = cookies().get('session-id')?.value;
+  const sessionId = (await cookies()).get('session-id')?.value;
 
   // If no session ID is found or session doesn't exist, return error
   if (!sessionId) {
@@ -16,7 +16,7 @@ export async function POST() {
   const session = getSession(sessionId);
 
   if (!session) {
-    return NextResponse.json({ error: 'Invalid or expired session' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid or expired session' + ' ' + sessionId }, { status: 400 });
   }
 
   const { credits } = session;

@@ -36,7 +36,7 @@ function rerollToLose(): [string, string, string] {
  * Deducts a credit, rolls slots, applies win/cheat logic, updates session.
  */
 export async function POST() {
-  const sessionId = cookies().get('session-id')?.value;
+  const sessionId = (await cookies()).get('session-id')?.value;
 
   // If session ID is missing
   if (!sessionId) {

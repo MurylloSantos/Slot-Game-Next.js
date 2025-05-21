@@ -18,8 +18,8 @@ export const RollButton: React.FC<RollButtonProps> = ({
   <button
     onClick={onClick}
     disabled={spinning || disabled}
-    className="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition disabled:opacity-50"
+    className="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
   >
-    {spinning ? 'Spinning...' : 'ROLL'}
+    {spinning ? 'Rolling...' : 'Roll'}
   </button>
 );

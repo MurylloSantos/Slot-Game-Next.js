@@ -125,9 +125,9 @@ export default function Home() {
         <button
           onClick={startGame}
           disabled={loading}
-          className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 transition disabled:opacity-50"
+          className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 transition disabled:opacity-50 cursor-pointer"
         >
-          {loading ? 'Starting...' : 'Start Game'}
+          {loading ? 'Starting...' : 'Start Session'}
         </button>
       )}
 
@@ -150,10 +150,10 @@ export default function Home() {
           {/* Cash Out Button */}
           <CashOutButton
             onCashOut={(finalCredits) => {
-              setMessage(`💸 You cashed out with ${finalCredits} credits!`);
               setCredits(null); // End session
               setSlots(['❓', '❓', '❓']); // Reset UI
             }}
+            isRolling={spinning}
           />
 
           {/* Win/loss message */}
