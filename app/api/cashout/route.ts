@@ -1,13 +1,10 @@
-// /app/api/cashout/route.ts
-
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getSession, deleteSession } from '@/lib/sessionStore'; // Use helper functions for session access
-import { getUser, addCredits } from '@/lib/userStore'; // Use helper functions for user access
+import { deleteSession } from '@/lib/sessionStore'; // Use helper functions for session access
+import { addCredits } from '@/lib/userStore'; // Use helper functions for user access
 import { getSessionAndUser } from '@/lib/context';
 
 export async function POST() {
-  const { session, user, sessionId, userId, setCookies } = await getSessionAndUser();
+  const { session, user, sessionId, userId } = await getSessionAndUser();
   
   if (!session || !sessionId || !user || !userId) {
     return NextResponse.json({ error: 'Invalid session or user'}, { status: 400 });

@@ -1,7 +1,4 @@
-import { cookies } from 'next/headers';
-import { getSession } from '@/lib/sessionStore';
 import { NextResponse } from 'next/server';
-import { createUser, getUser } from '@/lib/userStore';
 import { getSessionAndUser } from '@/lib/context';
 
 /**

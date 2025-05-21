@@ -1,6 +1,4 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getSession } from '@/lib/sessionStore';
 import { getSessionAndUser } from '@/lib/context';
 
 // Possible symbols and their corresponding payouts
@@ -38,7 +36,7 @@ function rerollToLose(): [string, string, string] {
  */
 export async function POST() {
   const { session, user, sessionId, userId, setCookies } = await getSessionAndUser();
-  
+
   if(!session) {
     return NextResponse.json({ error: 'Invalid session' }, { status: 400 });
   }

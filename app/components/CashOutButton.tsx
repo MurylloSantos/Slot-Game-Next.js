@@ -17,7 +17,7 @@ export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }:
   const disableDecision = isRolling || disabled;
 
   // Track the current x/y position of the button on screen
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [pos, setPos] = useState({ x: window.innerWidth - 200, y: window.innerHeight - 100 });
 
   // On initial mount, place the button near the center of the screen
   useEffect(() => {

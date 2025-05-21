@@ -1,7 +1,4 @@
 import { NextResponse } from 'next/server';
-import { createSession } from '@/lib/sessionStore';
-import { cookies } from 'next/headers';
-import { getUser } from '@/lib/userStore';
 import { getSessionAndUser } from '@/lib/context';
 
 /**
@@ -11,7 +8,7 @@ import { getSessionAndUser } from '@/lib/context';
  */
 export async function POST() {
   
-  const { session, user, sessionId, userId, setCookies } = await getSessionAndUser(true, true); // create user && session
+  const { session, setCookies } = await getSessionAndUser(true, true); // create user && session
 
   // Send session ID back via a cookie so the client can use it on future requests
   const response = NextResponse.json({ credits: session?.credits });
