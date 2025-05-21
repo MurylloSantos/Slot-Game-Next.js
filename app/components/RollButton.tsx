@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Spinner from './Spinner'
 
 // Props for the RollButton
 interface RollButtonProps {
@@ -20,6 +21,6 @@ export const RollButton: React.FC<RollButtonProps> = ({
     disabled={spinning || disabled}
     className="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
   >
-    {spinning ? 'Rolling...' : 'Roll'}
+    {spinning ? <><Spinner /></> : 'Roll'}
   </button>
 );
