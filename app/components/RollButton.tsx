@@ -1,0 +1,25 @@
+'use client';
+
+import React from 'react';
+
+// Props for the RollButton
+interface RollButtonProps {
+  onClick: () => void;
+  spinning: boolean;
+  disabled: boolean;
+}
+
+// Main ROLL button with state handling
+export const RollButton: React.FC<RollButtonProps> = ({
+  onClick,
+  spinning,
+  disabled,
+}) => (
+  <button
+    onClick={onClick}
+    disabled={spinning || disabled}
+    className="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition disabled:opacity-50"
+  >
+    {spinning ? 'Spinning...' : 'ROLL'}
+  </button>
+);

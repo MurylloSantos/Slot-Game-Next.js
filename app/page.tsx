@@ -1,9 +1,19 @@
 'use client'; // Enables client-side interactivity in this file
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { SlotDisplay } from './components/SlotDisplay';
+import { CreditCounter } from './components/CreditCounter';
+import { MessageBanner } from './components/MessageBanner';
+import { RollButton } from './components/RollButton';
+import { CashOutButton } from './components/CashOutButton';
 
-// List of possible symbols (used for loading state)
-const symbols = ['🍒', '🍋', '🍊', '🍉']; // Cherry, Lemon, Orange, Watermelon
+// Each symbol's corresponding reward if matched
+const symbolValues: Record<string, number> = {
+  '🍒': 10,
+  '🍋': 20,
+  '🍊': 30,
+  '🍉': 40,
+};
 
 export default function Home() {
   // State to store user's current credits
@@ -15,6 +25,12 @@ export default function Home() {
   // Track loading states for Start Game and Rolling
   const [loading, setLoading] = useState(false);
   const [spinning, setSpinning] = useState(false);
+
+  // Win/Loss message shown under slots
+  const [message, setMessage] = useState<string | null>(null);
+
+  //Ref to handle message clearing
+  const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch current session from server on first load
   // This is useful to keep session state when users refresh their browsers
@@ -59,6 +75,7 @@ export default function Home() {
     if (spinning || credits === null || credits < 1) return;
 
     setSpinning(true);
+    setMessage(null);
     setSlots(['⏳', '⏳', '⏳']); // Show spinner
 
     try {
@@ -72,6 +89,24 @@ export default function Home() {
       setTimeout(() => {
         setSlots(result);
         setCredits(data.credits); // Update credits
+
+        // Check for win condition (all symbols match)
+        if (result[0] === result[1] && result[1] === result[2]) {
+          const payout = symbolValues[result[0]];
+          setMessage(`🎉 You won ${payout} credits!`);
+        } else {
+          setMessage('🙁 No match. Try again!');
+        }
+
+        // Avoid message from being wiped early by old timeouts
+        if (messageTimeoutRef.current) {
+          clearTimeout(messageTimeoutRef.current);
+        }
+        messageTimeoutRef.current = setTimeout(() => {
+          setMessage(null);
+          messageTimeoutRef.current = null;
+        }, 5000);
+
         setSpinning(false);
       }, 3000);
     } catch (err) {
@@ -99,28 +134,30 @@ export default function Home() {
       {/* Show credits if game has started */}
       {credits !== null && (
         <>
-          <p className="text-lg">You have {credits} credits.</p>
+          {/* Show how many credits the user has */}
+          <CreditCounter credits={credits} />
 
-          {/* Slot blocks */}
-          <div className="flex justify-center gap-6 text-6xl mt-4">
-            {slots.map((symbol, index) => (
-              <div
-                key={index}
-                className="w-24 h-24 flex items-center justify-center border-4 border-black bg-white rounded-xl shadow-lg"
-              >
-                {symbol}
-              </div>
-            ))}
-          </div>
+          {/* Show slot result (❓ during initial state or ⏳ while loading) */}
+          <SlotDisplay symbols={slots} />
 
-          {/* ROLL button */}
-          <button
+          {/* Main ROLL button */}
+          <RollButton
             onClick={handleRoll}
-            disabled={spinning || credits < 1}
-            className="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition disabled:opacity-50"
-          >
-            {spinning ? 'Spinning...' : 'ROLL'}
-          </button>
+            spinning={spinning}
+            disabled={credits < 1}
+          />
+
+          {/* Cash Out Button */}
+          <CashOutButton
+            onCashOut={(finalCredits) => {
+              setMessage(`💸 You cashed out with ${finalCredits} credits!`);
+              setCredits(null); // End session
+              setSlots(['❓', '❓', '❓']); // Reset UI
+            }}
+          />
+
+          {/* Win/loss message */}
+          <MessageBanner message={message} />
         </>
       )}
     </main>
