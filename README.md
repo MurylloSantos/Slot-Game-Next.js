@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎰 Slot Machine Game (Fullstack - Next.js)
 
-## Getting Started
+This is a fullstack slot machine game built using **Next.js**. The app supports persistent user accounts, session-based gameplay, and server-side credit management with built-in cheating logic.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- Anonymous user account creation via cookie (`user-id`)
+- Session-based gameplay (`session-id`)
+- Credit deduction and reward system
+- Cheating logic that increases house wins under specific conditions
+- Persistent total credits per user
+- Responsive and animated slot machine UI
+- In-memory store for users and sessions (ideal for demo or assessment use)
+
+---
+
+## 📦 Tech Stack
+
+- **Frontend**: React (Next.js)
+- **Backend**: Server-side API routes (Next.js)
+- **State**: In-memory using `Map` (via `globalThis`)
+- **Styling**: Tailwind, CSS
+- **Session Persistence**: Cookies (`user-id`, `session-id`)
+
+---
+
+## ⚙️ Setup
 
 ```bash
+# Install dependencies
+npm install
+
+# Run locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> ✅ Make sure to run in a single server instance since the in-memory store is not shared across processes (not production safe).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔐 Cookie Usage
 
-## Learn More
+- `user-id`: Created automatically for new visitors and persisted for 1 day
+- `session-id`: Created upon starting a new game session, cleared after cash out
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤖 Cheating Logic
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- When credits are **between 40 and 60**, 30% chance to override winning spin
+- When credits are **above 60**, 60% chance to override winning spin
+- Cheating is applied only when a spin would otherwise be a win
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧪 Sample API Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `POST /api/start`: Begins a session
+- `POST /api/roll`: Deducts credit and returns spin result
+- `POST /api/cashout`: Ends session, adds credits to user
+- `GET /api/session`: Returns current session and user info
+
+---
+
+## 📝 Notes
+
+- This app uses in-memory storage for sessions and users (`globalThis`) to persist data across API calls in development.
+- In production, consider migrating to a database like PostgreSQL, Redis, or Firebase.
+
+---
