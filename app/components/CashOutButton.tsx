@@ -17,13 +17,13 @@ export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }:
   const disableDecision = isRolling || disabled;
 
   // Track the current x/y position of the button on screen
-  const [pos, setPos] = useState({ x: window.innerWidth - 200, y: window.innerHeight - 100 });
+  const [pos, setPos] = useState({ x: window.innerWidth / 2 - 100, y: 100 });
 
   // On initial mount, place the button near the center of the screen
   useEffect(() => {
     setPos({
-      x: window.innerWidth - 200, 
-      y: window.innerHeight - 100, 
+      x: window.innerWidth / 2 - 100, 
+      y: 100, 
     });
 
     // Handle window resize to keep button within visible screen
@@ -44,7 +44,8 @@ export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }:
    * - 40% chance: disable button temporarily for 2 seconds
    */
   const handleMouseEnter = () => {
-    const rand = Math.random();
+    const rand = Math.random()
+    console.log(rand);
     if (isCashingOut || disableDecision) return;
 
     if (rand < 0.5) {
@@ -60,7 +61,7 @@ export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }:
       const newY = Math.max(0, Math.min(window.innerHeight - 100, pos.y + deltaY));
 
       setPos({ x: newX, y: newY });
-    } if (rand < 0.4) {
+    } else if (rand < 0.9) {
       // Temporarily disable the button
       setDisabled(true);
       setTimeout(() => setDisabled(false), 2000);
