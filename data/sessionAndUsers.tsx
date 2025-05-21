@@ -1,10 +1,10 @@
 //Type representing the signle game session
-type Session = {
+export type Session = {
   credits: number, // Number of credits the user currently has, init: 10,
   userId: string // userId who is using this session
 };
 
-type User = {
+export type User = {
   totalCredits: number;
 };
 

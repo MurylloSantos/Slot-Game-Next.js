@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
-import { getSession, sessions } from '@/lib/sessionStore';
+import { getSession } from '@/lib/sessionStore';
 import { NextResponse } from 'next/server';
-import { createUser, getUser, users } from '@/lib/userStore';
+import { createUser, getUser } from '@/lib/userStore';
 
 /**
  * GET /api/session

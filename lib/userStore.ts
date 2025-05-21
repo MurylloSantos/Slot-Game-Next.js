@@ -1,4 +1,4 @@
-import {users} from '@/data/sessionAndUsers'
+import {users, User} from '@/data/sessionAndUsers'
 /**
  * Get user by ID.
  */
@@ -13,9 +13,6 @@ export function createUser(): {id: string, data: User} {
   const user = { totalCredits: 0 };
   const userId = crypto.randomUUID();
   users.set(userId, user);
-  console.log('setting new user');
-  console.log(users);
-  console.log('users set');
   return {id: userId, data: user};
 }
 

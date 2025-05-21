@@ -1,4 +1,4 @@
-import {sessions} from '@/data/sessionAndUsers'
+import {sessions, Session} from '@/data/sessionAndUsers'
 
 /**
  * Creates a new session with 10 starting credits.
