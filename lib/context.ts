@@ -1,4 +1,3 @@
-// lib/context.ts
 import { cookies } from 'next/headers';
 import { getSession, createSession } from './sessionStore';
 import { getUser, createUser } from './userStore';
