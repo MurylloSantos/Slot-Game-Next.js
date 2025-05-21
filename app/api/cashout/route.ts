@@ -4,21 +4,12 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { getSession, deleteSession } from '@/lib/sessionStore'; // Use helper functions for session access
 import { getUser, addCredits } from '@/lib/userStore'; // Use helper functions for user access
+import { getSessionAndUser } from '@/lib/context';
 
 export async function POST() {
-  // Read session ID from the request cookie
-  const sessionId = (await cookies()).get('session-id')?.value;
-  const userId = (await cookies()).get('user-id')?.value;
-
-  // Validate session and user existence
-  if (!sessionId || !userId) {
-    return NextResponse.json({ error: 'No session or user found in cookies' }, { status: 400 });
-  }
-
-  const session = getSession(sessionId);
-  const user = getUser(userId);
+  const { session, user, sessionId, userId, setCookies } = await getSessionAndUser();
   
-  if (!session || !user) {
+  if (!session || !sessionId || !user || !userId) {
     return NextResponse.json({ error: 'Invalid session or user'}, { status: 400 });
   }
 

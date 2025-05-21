@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/sessionStore';
+import { getSessionAndUser } from '@/lib/context';
 
 // Possible symbols and their corresponding payouts
 const symbols = ['🍒', '🍋', '🍊', '🍉'] as const;
@@ -36,18 +37,10 @@ function rerollToLose(): [string, string, string] {
  * Deducts a credit, rolls slots, applies win/cheat logic, updates session.
  */
 export async function POST() {
-  const sessionId = (await cookies()).get('session-id')?.value;
-
-  // If session ID is missing
-  if (!sessionId) {
-    return NextResponse.json({ error: 'Session not found' }, { status: 404 });
-  }
-
-  const session = getSession(sessionId);
-
-  // If session is invalid or expired
-  if (!session) {
-    return NextResponse.json({ error: 'Invalid session'}, { status: 404 });
+  const { session, user, sessionId, userId, setCookies } = await getSessionAndUser();
+  
+  if(!session) {
+    return NextResponse.json({ error: 'Invalid session' }, { status: 400 });
   }
 
   // Not enough credits to play
