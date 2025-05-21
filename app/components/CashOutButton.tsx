@@ -29,8 +29,8 @@ export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }:
     // Handle window resize to keep button within visible screen
     const handleResize = () => {
       setPos((pos) => ({
-        x: Math.min(pos.x, window.innerWidth - 150),
-        y: Math.min(pos.y, window.innerHeight - 50),
+        x: Math.min(pos.x, window.innerWidth - 200),
+        y: Math.min(pos.y, window.innerHeight - 100),
       }));
     };
 
@@ -48,11 +48,19 @@ export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }:
     if (isCashingOut || disableDecision) return;
 
     if (rand < 0.5) {
-      // Move to a random location within viewport boundaries
-      const newX = Math.random() * (window.innerWidth - 150);
-      const newY = Math.random() * (window.innerHeight - 50);
+      // Move 300px in a random direction from the current position
+      const angle = Math.random() * 2 * Math.PI; // Random direction in radians
+      const distance = 300;
+
+      const deltaX = Math.cos(angle) * distance;
+      const deltaY = Math.sin(angle) * distance;
+
+      // Ensure it stays within viewport boundaries
+      const newX = Math.max(0, Math.min(window.innerWidth - 200, pos.x + deltaX));
+      const newY = Math.max(0, Math.min(window.innerHeight - 100, pos.y + deltaY));
+
       setPos({ x: newX, y: newY });
-    } else if (rand < 0.9) {
+    } if (rand < 0.4) {
       // Temporarily disable the button
       setDisabled(true);
       setTimeout(() => setDisabled(false), 2000);
