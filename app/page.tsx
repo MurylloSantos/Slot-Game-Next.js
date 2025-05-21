@@ -1,6 +1,6 @@
 'use client'; // Enables client-side interactivity in this file
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   // State to store user's current credits
@@ -8,6 +8,23 @@ export default function Home() {
 
   // State to manage loading state while waiting for server response
   const [loading, setLoading] = useState(false);
+
+  // Fetch current session from server on first load
+  // This is useful to keep session state when users refresh their browsers
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const res = await fetch('/api/session');
+        if (!res.ok) return; // No existing session
+        const data = await res.json();
+        setCredits(data.credits);
+      } catch (err) {
+        console.error('Failed to fetch session', err);
+      }
+    };
+
+    fetchSession();
+  }, []);
 
   /**
    * Starts a new game by calling the /api/start endpoint.
