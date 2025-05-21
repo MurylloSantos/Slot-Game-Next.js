@@ -91,7 +91,7 @@ export async function POST() {
     const payout = payouts[result[0] as keyof typeof payouts];
     session.credits += payout;
   }
-
+  
   return NextResponse.json({
     result,
     credits: session.credits,

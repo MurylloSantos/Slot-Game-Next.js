@@ -1,11 +1,4 @@
-//Type representing the signle game session
-type Session = {
-  credits: number, // Number of credits the user currently has, init: 10,
-  userId: string // userId who is using this session
-};
-
-//In-memory store for all active sessions, better to use database but for this assessment, this will be enough
-const sessions = new Map<string, Session>();
+import {sessions} from '@/data/sessionAndUsers'
 
 /**
  * Creates a new session with 10 starting credits.

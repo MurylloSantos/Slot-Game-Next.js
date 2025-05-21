@@ -6,10 +6,11 @@ import toast from 'react-hot-toast';
 type Props = {
   // Callback function to pass final credits back to parent component after cashing out
   onCashOut: (finalCredits: number) => void,
+  setTotalCredits: (totalCredits: number) => void,
   isRolling?: boolean; // needed to disable button during rolling to prevent unexpected errors
 };
 
-export function CashOutButton({ onCashOut, isRolling = false }: Props) {
+export function CashOutButton({ onCashOut, setTotalCredits, isRolling = false }: Props) {
   // Track whether the button is temporarily disabled (due to hover behavior)
   const [disabled, setDisabled] = useState(false);
   const [isCashingOut, setIsCashingOut] = useState(false);
@@ -69,8 +70,9 @@ export function CashOutButton({ onCashOut, isRolling = false }: Props) {
     try {
       const res = await fetch('/api/cashout', { method: 'POST' });
       const data = await res.json();
-      console.log('here', data);
-      toast.success(`💰 You cashed out with ${data.credits} credits!`);
+      console.log('cashing out', data)
+      toast.success(`💰 You cashed out with ${data.cashedOutCredits} credits!`);
+      setTotalCredits(data.totalCredits);
       onCashOut(data.credits); // Pass back final credits to parent component
     } catch (err: any) {
       toast.error(err.message || 'Cash out failed');
