@@ -1,5 +1,3 @@
-// app/api/session/route.ts
-
 import { cookies } from 'next/headers';
 import { getSession } from '@/lib/sessionStore';
 import { NextResponse } from 'next/server';
