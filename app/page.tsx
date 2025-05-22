@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { SlotDisplay } from './components/SlotDisplay';
 import { CreditCounter } from './components/CreditCounter';
-import { MessageBanner } from './components/MessageBanner';
 import { RollButton } from './components/RollButton';
 import { CashOutButton } from './components/CashOutButton';
 import { Navbar } from './components/Navbar';
