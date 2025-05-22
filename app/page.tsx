@@ -29,12 +29,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [spinning, setSpinning] = useState(false);
 
-  // Win/Loss message shown under slots
-  const [message, setMessage] = useState<string | null>(null);
-
-  //Ref to handle message clearing
-  const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   // Fetch current session from server on first load
   // This is useful to keep session state when users refresh their browsers
   useEffect(() => {
@@ -83,7 +77,6 @@ export default function Home() {
     if (spinning || credits === null || credits < 1) return;
 
     setSpinning(true);
-    setMessage(null);
     setSlots(['⏳', '⏳', '⏳']); // Show spinner
 
     try {
@@ -101,19 +94,10 @@ export default function Home() {
         // Check for win condition (all symbols match)
         if (result[0] === result[1] && result[1] === result[2]) {
           const payout = symbolValues[result[0]];
-          setMessage(`🎉 You won ${payout} credits!`);
+          toast.success(`🎉 You won ${payout} credits!`);
         } else {
-          setMessage('🙁 No match. Try again!');
+          toast.error('🙁 No match. Try again!');
         }
-
-        // Avoid message from being wiped early by old timeouts
-        if (messageTimeoutRef.current) {
-          clearTimeout(messageTimeoutRef.current);
-        }
-        messageTimeoutRef.current = setTimeout(() => {
-          setMessage(null);
-          messageTimeoutRef.current = null;
-        }, 5000);
 
         setSpinning(false);
       }, 3000);
@@ -168,9 +152,6 @@ export default function Home() {
               }}
               isRolling={spinning}
             />
-
-            {/* Win/loss message */}
-            <MessageBanner message={message} />
           </>
         )}
       </main>
